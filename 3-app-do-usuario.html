@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Liberdade — Meu Painel</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  .breath-circle { transition: transform 4s ease-in-out; }
+  .breath-in { transform: scale(1.4); }
+  .breath-out { transform: scale(1); }
+</style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+
+<div id="onboarding" class="max-w-md mx-auto px-6 py-14">
+  <h1 class="text-2xl font-extrabold mb-2 text-center">Bem-vindo ao Liberdade</h1>
+  <p class="text-gray-400 text-sm text-center mb-8">Vamos começar sua contagem. Isso leva 10 segundos.</p>
+
+  <label class="block text-sm text-gray-400 mb-2">Quanto você costumava gastar com apostas por semana? (R$)</label>
+  <input id="weeklySpendInput" type="number" placeholder="Ex: 300"
+         class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 mb-6 text-lg">
+
+  <button onclick="startJourney()"
+          class="w-full bg-green-500 hover:bg-green-400 text-black font-bold py-3 rounded-lg text-lg">
+    Começar minha contagem agora
+  </button>
+</div>
+
+<div id="dashboard" class="max-w-md mx-auto px-6 py-10 hidden">
+  <h1 class="text-xl font-bold text-center mb-6">Seu progresso</h1>
+
+  <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 text-center mb-4">
+    <p class="text-gray-400 text-sm mb-1">Dias limpos</p>
+    <p id="daysClean" class="text-5xl font-extrabold">0</p>
+  </div>
+
+  <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 text-center mb-4">
+    <p class="text-gray-400 text-sm mb-1">Dinheiro economizado</p>
+    <p id="moneySaved" class="text-4xl font-extrabold text-green-400">R$ 0,00</p>
+  </div>
+
+  <button onclick="resetStreak()"
+          class="w-full border border-gray-700 hover:bg-gray-900 py-3 rounded-lg mb-3 text-sm text-gray-300">
+    Recaí — reiniciar contagem
+  </button>
+
+  <button onclick="openSos()"
+          class="w-full bg-red-600 hover:bg-red-500 font-bold py-4 rounded-lg text-lg mt-6">
+    🆘 Estou com fissura agora
+  </button>
+
+  <div class="mt-8 bg-gray-900/60 border border-gray-800 rounded-xl p-4 text-xs text-gray-500 text-center">
+    🔒 Bloqueio automático de apps/sites de apostas: versão Android chegando em breve.
+    Você será avisado aqui mesmo.
+  </div>
+</div>
+
+<div id="sos" class="max-w-md mx-auto px-6 py-14 hidden text-center">
+  <p class="text-lg font-bold mb-10">Essa vontade vai passar. Respire comigo.</p>
+  <div id="breathCircle" class="breath-circle breath-out w-40 h-40 rounded-full bg-green-500/30 border-2 border-green-400 mx-auto flex items-center justify-center mb-8">
+    <span id="breathLabel" class="text-lg font-semibold">Solte o ar</span>
+  </div>
+  <p class="text-gray-400 text-sm mb-10">Isso ativa seu sistema nervoso e reduz o pico de fissura em poucos minutos.</p>
+  <button onclick="closeSos()" class="text-gray-400 underline text-sm">Já me sinto melhor, voltar</button>
+</div>
+
+<script>
+const STORAGE_KEY = 'liberdade_start_ts';
+const SPEND_KEY = 'liberdade_weekly_spend';
+
+function startJourney() {
+  const spend = parseFloat(document.getElementById('weeklySpendInput').value) || 0;
+  localStorage.setItem(STORAGE_KEY, Date.now().toString());
+  localStorage.setItem(SPEND_KEY, spend.toString());
+  showDashboard();
+}
+
+function resetStreak() {
+  if (confirm('Tudo bem. Reiniciar a contagem não é fracasso, é parte do processo. Confirmar reinício?')) {
+    localStorage.setItem(STORAGE_KEY, Date.now().toString());
+    updateDashboard();
+  }
+}
+
+function updateDashboard() {
+  const start = parseInt(localStorage.getItem(STORAGE_KEY), 10);
+  const weeklySpend = parseFloat(localStorage.getItem(SPEND_KEY)) || 0;
+  const elapsedMs = Date.now() - start;
+  const days = Math.floor(elapsedMs / 86400000);
+  const saved = (weeklySpend / 7) * days;
+
+  document.getElementById('daysClean').textContent = days;
+  document.getElementById('moneySaved').textContent =
+    'R$ ' + saved.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function showDashboard() {
+  document.getElementById('onboarding').classList.add('hidden');
+  document.getElementById('dashboard').classList.remove('hidden');
+  updateDashboard();
+}
+
+let breathInterval;
+function openSos() {
+  document.getElementById('dashboard').classList.add('hidden');
+  document.getElementById('sos').classList.remove('hidden');
+  runBreathCycle();
+}
+
+function closeSos() {
+  clearInterval(breathInterval);
+  document.getElementById('sos').classList.add('hidden');
+  document.getElementById('dashboard').classList.remove('hidden');
+}
+
+function runBreathCycle() {
+  const circle = document.getElementById('breathCircle');
+  const label = document.getElementById('breathLabel');
+  const steps = [
+    { text: 'Inspire', cls: 'breath-in', duration: 4000 },
+    { text: 'Segure', cls: 'breath-in', duration: 7000 },
+    { text: 'Solte o ar', cls: 'breath-out', duration: 8000 }
+  ];
+  let i = 0;
+  function next() {
+    const step = steps[i % steps.length];
+    label.textContent = step.text;
+    circle.classList.remove('breath-in', 'breath-out');
+    circle.classList.add(step.cls);
+    i++;
+    breathInterval = setTimeout(next, step.duration);
+  }
+  next();
+}
+
+// Ao carregar: decide se mostra onboarding ou dashboard
+window.onload = function() {
+  if (localStorage.getItem(STORAGE_KEY)) {
+    showDashboard();
+    setInterval(updateDashboard, 60000);
+  }
+};
+</script>
+
+</body>
+</html>
