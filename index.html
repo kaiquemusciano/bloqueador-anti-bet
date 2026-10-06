@@ -12,7 +12,7 @@
 
 <div class="max-w-md mx-auto px-6 py-10">
   <!-- Headline de Apresentação e Retenção -->
-<div style="text-align: center; padding: 20px 15px; margin-bottom: 25px; background: #0f172a; border-radius: 16px; border: 1px solid #1e293b;">
+  <div id="headerBox" style="text-align: center; padding: 20px 15px; margin-bottom: 25px; background: #0f172a; border-radius: 16px; border: 1px solid #1e293b;">
     <span style="background-color: rgba(34, 197, 94, 0.15); color: #22c55e; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 12px; letter-spacing: 0.5px; text-transform: uppercase;">
         Diagnóstico Gratuito de Controle
     </span>
@@ -24,7 +24,7 @@
     <p style="color: #9ca3af; font-size: 14px; margin-top: 8px; line-height: 1.5; margin-bottom: 0;">
         Responda às <strong>7 perguntas rápidas</strong> abaixo para avaliar o seu perfil de risco e liberar o seu plano de recuperação financeira.
     </p>
-</div>
+  </div>
 
   <div id="progressWrap" class="mb-6">
     <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
@@ -33,17 +33,44 @@
     <p id="progressText" class="text-xs text-gray-500 mt-2 text-center">Pergunta 1 de 7</p>
   </div>
 
+  <!-- Área das perguntas do quiz -->
   <div id="quizArea"></div>
 
-  <div id="resultArea" class="hidden text-center">
-    <h1 class="text-2xl font-extrabold mb-3">Seu diagnóstico está pronto</h1>
-    <p id="resultText" class="text-gray-400 mb-8"></p>
-    <div class="bg-gray-900 border border-green-500 rounded-xl p-5 mb-6">
-      <p class="font-semibold mb-2">O plano certo pra você:</p>
-      <p class="text-sm text-gray-400">Com base nas suas respostas, montamos um ponto de partida realista — sem exigir que você "pare de uma vez", e sim trave o acesso enquanto reconstrói o controle.</p>
+  <!-- Tela de Carregamento (Simula análise de dados) -->
+  <div id="loadingArea" class="hidden text-center py-12">
+    <div class="inline-block w-10 h-10 border-4 border-gray-800 border-t-green-500 rounded-full animate-spin mb-4"></div>
+    <h2 class="text-lg font-bold text-white">Analisando suas respostas...</h2>
+    <p class="text-xs text-gray-500 mt-2">Cruzando padrões de comportamento e intensidade de gatilhos...</p>
+  </div>
+
+  <!-- Tela do Diagnóstico Personalizado (Já existente na base, mas agora ativada pelo script) -->
+  <div id="resultArea" class="hidden">
+    <div class="text-center mb-6">
+      <span class="bg-green-500/10 text-green-500 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide border border-green-500/30">
+        Análise Concluída
+      </span>
+      <h1 class="text-2xl font-extrabold mt-3 text-white">Diagnóstico do Seu Perfil</h1>
     </div>
+
+    <!-- Caixa do Nível Identificado -->
+    <div class="bg-gray-900 border border-green-500 rounded-xl p-5 mb-4 shadow-lg shadow-green-500/5">
+      <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Nível de Risco Identificado:</p>
+      <p id="resNivel" class="text-lg font-extrabold text-green-400"></p>
+    </div>
+
+    <!-- Caixa da Mensagem Personalizada -->
+    <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 mb-4 border-l-4 border-l-green-500">
+      <p class="text-sm text-gray-300 leading-relaxed" id="resMensagem"></p>
+    </div>
+
+    <!-- Caixa da Recomendação Prática -->
+    <div class="bg-gray-900/60 border border-gray-800 rounded-xl p-5 mb-6">
+      <p class="font-semibold mb-1 text-sm text-white">Recomendação do Protocolo:</p>
+      <p class="text-xs text-gray-400 leading-relaxed" id="resRecomendacao"></p>
+    </div>
+
     <a href="2-oferta.html"
-       class="block bg-green-500 hover:bg-green-400 text-black font-bold py-4 rounded-lg text-lg">
+       class="block bg-green-500 hover:bg-green-400 text-black font-bold py-4 rounded-xl text-center text-lg transition shadow-lg shadow-green-500/20">
       Ver meu plano de recuperação →
     </a>
   </div>
@@ -84,17 +111,17 @@ const questions = [
 ];
 
 let currentQuestion = 0;
-let selectedAnswers = {}; // Salva as escolhas do usuário em cada pergunta
+let selectedAnswers = {}; // Salva as escolhas do usuário em cada pergunta[cite: 1]
 
 function renderQuestion() {
     const quizArea = document.getElementById('quizArea');
     const q = questions[currentQuestion];
 
-    // Atualiza o progresso visual
+    // Atualiza o progresso visual[cite: 1]
     document.getElementById('progressText').innerText = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
     document.getElementById('progressBar').style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
 
-    // Renderiza as opções da pergunta atual
+    // Renderiza as opções da pergunta atual[cite: 1]
     let optionsHtml = q.options.map((opt, index) => {
         const isSelected = selectedAnswers[currentQuestion] === index;
         return `
@@ -112,7 +139,7 @@ function renderQuestion() {
     const isFirst = currentQuestion === 0;
     const hasSelection = selectedAnswers[currentQuestion] !== undefined;
 
-    // Constrói o HTML da pergunta + Botões de Ação
+    // Constrói o HTML da pergunta + Botões de Ação[cite: 1]
     quizArea.innerHTML = `
         <h2 class="text-xl font-bold text-white mb-4">${q.title}</h2>
         <div class="mb-6">${optionsHtml}</div>
@@ -137,13 +164,13 @@ function renderQuestion() {
     `;
 }
 
-// Guarda a opção escolhida sem trocar de página
+// Guarda a opção escolhida sem trocar de página[cite: 1]
 function selectOption(index) {
     selectedAnswers[currentQuestion] = index;
     renderQuestion();
 }
 
-// Navega para a pergunta anterior
+// Navega para a pergunta anterior[cite: 1]
 function prevQuestion() {
     if (currentQuestion > 0) {
         currentQuestion--;
@@ -151,7 +178,7 @@ function prevQuestion() {
     }
 }
 
-// Avança para a próxima pergunta ou redireciona no final
+// Avança para a próxima pergunta ou calcula o diagnóstico personalizado no final
 function nextQuestion() {
     if (selectedAnswers[currentQuestion] === undefined) return;
 
@@ -159,11 +186,52 @@ function nextQuestion() {
         currentQuestion++;
         renderQuestion();
     } else {
-        window.location.href = '2-oferta.html';
+        // Chegou na última pergunta: esconde o quiz e exibe a tela de carregamento
+        document.getElementById('quizArea').style.display = 'none';
+        document.getElementById('progressWrap').style.display = 'none';
+        document.getElementById('headerBox').style.display = 'none';
+        document.getElementById('loadingArea').style.display = 'block';
+
+        // Simula 2 segundos de carregamento para dar valor ao diagnóstico
+        setTimeout(() => {
+            document.getElementById('loadingArea').style.display = 'none';
+            document.getElementById('resultArea').classList.remove('hidden');
+
+            // Calcula a pontuação somando o índice das respostas escolhidas
+            let totalPontos = 0;
+            for (let qIndex in selectedAnswers) {
+                totalPontos += selectedAnswers[qIndex]; 
+            }
+
+            // Define o diagnóstico com base na pontuação
+            let nivel = "";
+            let mensagem = "";
+            let recomendacao = "";
+
+            if (totalPontos >= 14) {
+                nivel = "GRAU CRÍTICO DE ALERTA ATIVO";
+                mensagem = "O seu padrão comportamental está operando no piloto automático da dopamina. Os impulsos frequentes estão ditando as regras e drenando o seu foco e suas finanças em silêncio.";
+                recomendacao = "Como o nível de urgência é alto, o recomendado é a interrupção imediata de acessos e a ativação do protocolo de corte total de gatilhos por 30 dias para estancar as perdas.";
+            } else if (totalPontos >= 7) {
+                nivel = "GRAU DE RISCO MODERADO";
+                mensagem = "Você transita entre momentos de tentativa de controle e recaídas impulsivas. O ciclo de tentar recuperar o prejuízo está consumindo a sua paz mental e estabilidade.";
+                recomendacao = "O momento ideal para agir é agora, antes que o hábito vire uma bola de neve financeira. O foco deve ser o bloqueio comportamental preventivo.";
+            } else {
+                nivel = "GRAU DE ALERTA INICIAL";
+                mensagem = "Você ainda está no começo do ciclo de exposição às apostas. Mesmo que sinta controle, o algoritmo e a facilidade do Pix podem transformar pequenos hábitos em problemas maiores.";
+                recomendacao = "Estabelecer barreiras de bloqueio preventivas agora garante que você mantenha o total domínio sobre o seu dinheiro e o seu tempo.";
+            }
+
+            // Insere os textos dinamicamente na tela de resultado
+            document.getElementById('resNivel').innerText = nivel;
+            document.getElementById('resMensagem').innerText = mensagem;
+            document.getElementById('resRecomendacao').innerText = recomendacao;
+
+        }, 2000);
     }
 }
 
-// Inicia a renderização ao carregar a página
+// Inicia a renderização ao carregar a página[cite: 1]
 renderQuestion();
 </script>
 </body>
