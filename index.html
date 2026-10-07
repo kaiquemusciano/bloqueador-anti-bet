@@ -1,238 +1,59 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='black'/><text y='75' x='22' font-size='75' font-weight='bold' font-family='sans-serif' fill='%2322c55e'>B</text></svg>">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Você domina o jogo ou o jogo te domina? | Teste de Nível</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}</style>
-</head>
-<body class="bg-gray-950 text-gray-100 min-h-screen">
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Autoavaliação: como está sua relação com apostas?</title>
+<meta name="description" content="Sete perguntas para refletir sobre seus hábitos com apostas. Não é um diagnóstico.">
+<link rel="stylesheet" href="style.css"></head>
+<body><main>
+<h1>Como está sua relação com apostas?</h1>
+<p>Sete perguntas para você refletir sobre seus hábitos. As respostas ficam só no seu aparelho e o resultado é calculado a partir do que você marcar.</p>
+<p class="muted">Isto é uma autoavaliação informal. Não é diagnóstico e não substitui a conversa com um profissional de saúde.</p>
 
-<div class="max-w-md mx-auto px-6 py-10">
-  <!-- Headline de Apresentação e Retenção -->
-  <div id="headerBox" style="text-align: center; padding: 20px 15px; margin-bottom: 25px; background: #0f172a; border-radius: 16px; border: 1px solid #1e293b;">
-    <span style="background-color: rgba(34, 197, 94, 0.15); color: #22c55e; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 12px; letter-spacing: 0.5px; text-transform: uppercase;">
-        Diagnóstico Gratuito de Controle
-    </span>
-    
-    <h1 style="color: #ffffff; font-size: 20px; font-weight: 800; margin-top: 15px; margin-bottom: 10px; line-height: 1.3;">
-        Descubra se o seu nível de impulso em cassinos exige um bloqueio imediato
-    </h1>
-    
-    <p style="color: #9ca3af; font-size: 14px; margin-top: 8px; line-height: 1.5; margin-bottom: 0;">
-        Responda às <strong>7 perguntas rápidas</strong> abaixo para avaliar o seu perfil de risco e liberar o seu plano de recuperação financeira.
-    </p>
-  </div>
+<section id="quiz" class="box">
+<div class="bar" aria-hidden="true"><i id="prog" style="width:0"></i></div>
+<p class="muted" id="count" style="margin-top:10px"></p>
+<h2 id="q" style="margin-top:0" tabindex="-1"></h2>
+<div class="opts" id="opts"></div>
+<button class="btn alt hide" id="back" type="button">Voltar</button>
+</section>
 
-  <div id="progressWrap" class="mb-6">
-    <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
-      <div id="progressBar" class="h-2 bg-green-500 transition-all" style="width:0%"></div>
-    </div>
-    <p id="progressText" class="text-xs text-gray-500 mt-2 text-center">Pergunta 1 de 7</p>
-  </div>
-
-  <!-- Área das perguntas do quiz -->
-  <div id="quizArea"></div>
-
-  <!-- Tela de Carregamento (Simula análise de dados) -->
-  <div id="loadingArea" class="hidden text-center py-12">
-    <div class="inline-block w-10 h-10 border-4 border-gray-800 border-t-green-500 rounded-full animate-spin mb-4"></div>
-    <h2 class="text-lg font-bold text-white">Analisando suas respostas...</h2>
-    <p class="text-xs text-gray-500 mt-2">Cruzando padrões de comportamento e intensidade de gatilhos...</p>
-  </div>
-
-  <!-- Tela do Diagnóstico Personalizado (Já existente na base, mas agora ativada pelo script) -->
-  <div id="resultArea" class="hidden">
-    <div class="text-center mb-6">
-      <span class="bg-green-500/10 text-green-500 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide border border-green-500/30">
-        Análise Concluída
-      </span>
-      <h1 class="text-2xl font-extrabold mt-3 text-white">Diagnóstico do Seu Perfil</h1>
-    </div>
-
-    <!-- Caixa do Nível Identificado -->
-    <div class="bg-gray-900 border border-green-500 rounded-xl p-5 mb-4 shadow-lg shadow-green-500/5">
-      <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Nível de Risco Identificado:</p>
-      <p id="resNivel" class="text-lg font-extrabold text-green-400"></p>
-    </div>
-
-    <!-- Caixa da Mensagem Personalizada -->
-    <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 mb-4 border-l-4 border-l-green-500">
-      <p class="text-sm text-gray-300 leading-relaxed" id="resMensagem"></p>
-    </div>
-
-    <!-- Caixa da Recomendação Prática -->
-    <div class="bg-gray-900/60 border border-gray-800 rounded-xl p-5 mb-6">
-      <p class="font-semibold mb-1 text-sm text-white">Recomendação do Protocolo:</p>
-      <p class="text-xs text-gray-400 leading-relaxed" id="resRecomendacao"></p>
-    </div>
-
-    <a href="2-oferta.html"
-       class="block bg-green-500 hover:bg-green-400 text-black font-bold py-4 rounded-xl text-center text-lg transition shadow-lg shadow-green-500/20">
-      Ver meu plano de recuperação →
-    </a>
-  </div>
-
+<section id="result" class="hide" aria-live="polite">
+<h2 id="rt" tabindex="-1"></h2>
+<p id="rp"></p>
+<div class="box note">
+<p><strong>Se você quer conversar com alguém</strong></p>
+<p>CVV: ligue 188, 24 horas, gratuito. CAPS AD: atendimento gratuito pelo SUS para quem quer cuidar do uso de álcool, drogas e jogos. Jogadores Anônimos: grupos de apoio gratuitos, presenciais e on-line.</p>
 </div>
+<p>Se quiser uma ferramenta de apoio no celular, conheça o Bloqueador AntiBet. Ele ajuda no dia a dia, mas não é tratamento.</p>
+<a class="btn" href="2-oferta.html">Conhecer o Bloqueador AntiBet</a>
+<p style="margin-top:12px"><button class="btn alt" id="redo" type="button">Refazer a autoavaliação</button></p>
+</section>
 
+<footer class="muted">Bloqueador AntiBet · <a href="termos.html">Termos, privacidade e cobrança</a></footer>
+</main>
 <script>
-// Array com as 7 Perguntas do Quiz
-const questions = [
-    {
-        title: "Com que frequência você costuma apostar em cassinos ou bets?",
-        options: ["Todos os dias", "Algumas vezes por semana", "Raramente / Finais de semana", "Apenas quando tenho dinheiro sobrando"]
-    },
-    {
-        title: "Você já tentou parar ou diminuir as apostas e não conseguiu?",
-        options: ["Sim, várias vezes", "Sim, algumas vezes", "Nunca tentei parar", "Acho que tenho total controle"]
-    },
-    {
-        title: "Quando você perde dinheiro, qual é a sua reação imediata?",
-        options: ["Deposito mais para tentar recuperar o valor na hora", "Fico frustrado e continuo jogando depois", "Paro no mesmo instante e aceito a perda", "Não costumo perder valores altos"]
-    },
-    {
-        title: "As apostas já causaram algum tipo de ansiedade ou estresse no seu dia a dia?",
-        options: ["Sim, constantemente", "Às vezes fico preocupado com o saldo", "Raramente", "Não afeta meu emocional"]
-    },
-    {
-        title: "Você costuma esconder ou omitir de familiares o quanto gasta em apostas?",
-        options: ["Sim, sempre escondo", "Às vezes prefiro não falar", "Raramente comento", "Não, falo abertamente"]
-    },
-    {
-        title: "Já usou dinheiro reservado para contas essenciais (aluguel, luz, comida) para apostar?",
-        options: ["Sim, infelizmente já aconteceu", "Quase fiz isso algumas vezes", "Nunca usei dinheiro de contas fixas", "Apenas uso dinheiro livre"]
-    },
-    {
-        title: "Você gostaria de um bloqueador e acompanhamento para eliminar o impulso de apostar?",
-        options: ["Sim, preciso de ajuda imediata", "Sim, quero testar por 7 dias", "Tenho interesse em conhecer", "Ainda estou indeciso"]
-    }
-];
-
-let currentQuestion = 0;
-let selectedAnswers = {}; // Salva as escolhas do usuário em cada pergunta[cite: 1]
-
-function renderQuestion() {
-    const quizArea = document.getElementById('quizArea');
-    const q = questions[currentQuestion];
-
-    // Atualiza o progresso visual[cite: 1]
-    document.getElementById('progressText').innerText = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
-    document.getElementById('progressBar').style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
-
-    // Renderiza as opções da pergunta atual[cite: 1]
-    let optionsHtml = q.options.map((opt, index) => {
-        const isSelected = selectedAnswers[currentQuestion] === index;
-        return `
-            <button onclick="selectOption(${index})" 
-                class="w-full text-left p-4 rounded-xl border mb-3 transition font-medium ${
-                    isSelected 
-                    ? 'border-green-500 bg-green-500/10 text-white font-bold' 
-                    : 'border-gray-800 bg-gray-900 text-gray-300 hover:border-gray-700'
-                }">
-                ${opt}
-            </button>
-        `;
-    }).join('');
-
-    const isFirst = currentQuestion === 0;
-    const hasSelection = selectedAnswers[currentQuestion] !== undefined;
-
-    // Constrói o HTML da pergunta + Botões de Ação[cite: 1]
-    quizArea.innerHTML = `
-        <h2 class="text-xl font-bold text-white mb-4">${q.title}</h2>
-        <div class="mb-6">${optionsHtml}</div>
-
-        <div class="flex gap-3 mt-6">
-            ${!isFirst ? `
-                <button onclick="prevQuestion()" 
-                    class="w-1/3 py-3 rounded-xl border border-gray-700 text-gray-300 font-semibold hover:bg-gray-800 transition text-center">
-                    ← Voltar
-                </button>
-            ` : ''}
-            
-            <button onclick="nextQuestion()" ${!hasSelection ? 'disabled' : ''} 
-                class="flex-1 py-3 rounded-xl font-bold transition text-center ${
-                    hasSelection 
-                    ? 'bg-green-500 hover:bg-green-400 text-black cursor-pointer' 
-                    : 'bg-gray-800 text-gray-500 cursor-not-allowed'
-                }">
-                ${currentQuestion === questions.length - 1 ? 'Ver Diagnóstico →' : 'Avançar →'}
-            </button>
-        </div>
-    `;
+const Q=["Já apostei mais tempo ou dinheiro do que pretendia.","Sinto vontade forte de apostar quando estou estressado, ansioso ou entediado.","Já tentei parar ou reduzir e não consegui.","Escondo ou diminuo para outras pessoas o quanto aposto.","Já usei dinheiro de contas ou necessidades básicas para apostar.","Aposto mais para tentar recuperar o que perdi.","Apostar já prejudicou meu sono, trabalho ou relacionamentos."];
+const O=["Nunca","Às vezes","Com frequência","Quase sempre"];
+const R=[[5,"Sinais baixos","Suas respostas mostram poucos sinais de dificuldade. Vale manter atenção ao tempo e ao dinheiro que você gasta com apostas."],
+[12,"Sinais moderados","Algumas respostas indicam que apostar pode estar pesando na sua rotina. Conversar com alguém de confiança ou com um profissional pode ajudar a entender melhor."],
+[21,"Sinais fortes","Suas respostas indicam que apostar pode estar causando prejuízo importante. Procurar apoio profissional é um bom próximo passo, e os contatos abaixo são gratuitos."]];
+let i=0,a=[];
+const $=id=>document.getElementById(id);
+function show(){
+ $("prog").style.width=(i/Q.length*100)+"%";
+ $("count").textContent="Pergunta "+(i+1)+" de "+Q.length;
+ $("q").textContent=Q[i];
+ $("opts").innerHTML="";
+ O.forEach((t,n)=>{const b=document.createElement("button");b.type="button";b.className="btn alt";b.textContent=t;b.onclick=()=>{a[i]=n;i++;i<Q.length?show():done()};$("opts").appendChild(b)});
+ $("back").classList.toggle("hide",i===0);
+ $("q").focus();
 }
-
-// Guarda a opção escolhida sem trocar de página[cite: 1]
-function selectOption(index) {
-    selectedAnswers[currentQuestion] = index;
-    renderQuestion();
+function done(){
+ const s=a.reduce((x,y)=>x+y,0),r=R.find(r=>s<=r[0]);
+ $("quiz").classList.add("hide");$("result").classList.remove("hide");
+ $("rt").textContent=r[1];$("rp").textContent=r[2];$("rt").focus();
 }
-
-// Navega para a pergunta anterior[cite: 1]
-function prevQuestion() {
-    if (currentQuestion > 0) {
-        currentQuestion--;
-        renderQuestion();
-    }
-}
-
-// Avança para a próxima pergunta ou calcula o diagnóstico personalizado no final
-function nextQuestion() {
-    if (selectedAnswers[currentQuestion] === undefined) return;
-
-    if (currentQuestion < questions.length - 1) {
-        currentQuestion++;
-        renderQuestion();
-    } else {
-        // Chegou na última pergunta: esconde o quiz e exibe a tela de carregamento
-        document.getElementById('quizArea').style.display = 'none';
-        document.getElementById('progressWrap').style.display = 'none';
-        document.getElementById('headerBox').style.display = 'none';
-        document.getElementById('loadingArea').style.display = 'block';
-
-        // Simula 2 segundos de carregamento para dar valor ao diagnóstico
-        setTimeout(() => {
-            document.getElementById('loadingArea').style.display = 'none';
-            document.getElementById('resultArea').classList.remove('hidden');
-
-            // Calcula a pontuação somando o índice das respostas escolhidas
-            let totalPontos = 0;
-            for (let qIndex in selectedAnswers) {
-                totalPontos += selectedAnswers[qIndex]; 
-            }
-
-            // Define o diagnóstico com base na pontuação
-            let nivel = "";
-            let mensagem = "";
-            let recomendacao = "";
-
-            if (totalPontos >= 14) {
-                nivel = "GRAU CRÍTICO DE ALERTA ATIVO";
-                mensagem = "O seu padrão comportamental está operando no piloto automático da dopamina. Os impulsos frequentes estão ditando as regras e drenando o seu foco e suas finanças em silêncio.";
-                recomendacao = "Como o nível de urgência é alto, o recomendado é a interrupção imediata de acessos e a ativação do protocolo de corte total de gatilhos por 30 dias para estancar as perdas.";
-            } else if (totalPontos >= 7) {
-                nivel = "GRAU DE RISCO MODERADO";
-                mensagem = "Você transita entre momentos de tentativa de controle e recaídas impulsivas. O ciclo de tentar recuperar o prejuízo está consumindo a sua paz mental e estabilidade.";
-                recomendacao = "O momento ideal para agir é agora, antes que o hábito vire uma bola de neve financeira. O foco deve ser o bloqueio comportamental preventivo.";
-            } else {
-                nivel = "GRAU DE ALERTA INICIAL";
-                mensagem = "Você ainda está no começo do ciclo de exposição às apostas. Mesmo que sinta controle, o algoritmo e a facilidade do Pix podem transformar pequenos hábitos em problemas maiores.";
-                recomendacao = "Estabelecer barreiras de bloqueio preventivas agora garante que você mantenha o total domínio sobre o seu dinheiro e o seu tempo.";
-            }
-
-            // Insere os textos dinamicamente na tela de resultado
-            document.getElementById('resNivel').innerText = nivel;
-            document.getElementById('resMensagem').innerText = mensagem;
-            document.getElementById('resRecomendacao').innerText = recomendacao;
-
-        }, 2000);
-    }
-}
-
-// Inicia a renderização ao carregar a página[cite: 1]
-renderQuestion();
-</script>
-</body>
-</html>
+$("back").onclick=()=>{i--;show()};
+$("redo").onclick=()=>{i=0;a=[];$("result").classList.add("hide");$("quiz").classList.remove("hide");show()};
+show();
+</script></body></html>
