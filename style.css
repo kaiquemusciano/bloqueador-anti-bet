@@ -25,5 +25,6 @@ p{margin:0 0 14px}a{color:var(--accent)}
 .price{font-size:1.5rem;font-weight:800;color:var(--accent)}
 details{border-bottom:1px solid var(--line);padding:14px 0}summary{cursor:pointer;font-weight:600}
 footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line)}
+.hn{color:var(--accent);font-weight:800}
 .hide{display:none}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
