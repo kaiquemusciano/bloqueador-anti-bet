@@ -1,182 +1,208 @@
 <!DOCTYPE html>
 <html lang="pt-BR"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#000000">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#04090a">
 <title>Hoje Não: contador de dias sem apostar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#e8f5ec;--paper:#000;--card:#0d1411;--accent:#22c55e;--soft:#10201a;--line:#1f3a2b;--muted:#8fa89a;--warm:#fb923c;color-scheme:dark}
-*{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
-main{max-width:480px;margin:0 auto;padding:20px 16px 110px}
-h1,h2,.big{font-family:Georgia,"Times New Roman",serif;margin:0}
-h2{font-size:1.2rem;margin-bottom:8px}
-p{margin:0 0 10px}.muted{color:var(--muted);font-size:.88rem}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
-.hero{background:var(--card);color:var(--ink);border:1px solid var(--accent);text-align:center;padding:24px 16px}
-.big{font-size:4rem;line-height:1;color:var(--accent)}.hero p{margin:6px 0 0}
-.money{font-size:1.9rem;font-weight:700;color:var(--accent)}
-.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.grid div{background:var(--soft);border-radius:10px;padding:10px 6px;text-align:center}
-.grid b{display:block;font-size:1.1rem}
-.btn{display:block;width:100%;border:0;border-radius:10px;padding:14px;font:inherit;font-weight:600;cursor:pointer;background:var(--accent);color:#04120a;text-align:center;text-decoration:none}
-.btn.alt{background:var(--card);color:var(--accent);border:1px solid var(--accent)}
-.btn.warm{background:var(--warm);color:#1a0a02}
-.bar{height:10px;background:var(--line);border-radius:5px;overflow:hidden;margin:8px 0}
-.bar i{display:block;height:100%;background:var(--accent);border-radius:5px}
-.cta{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,var(--paper) 35%)}
-.cta .btn{max-width:448px;margin:0 auto;font-size:1.05rem;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+:root{--bg:#04090a;--ink:#eaf6ee;--mut:#86a091;--g:#2ee27a;--glass:rgba(255,255,255,.05);--bd:rgba(255,255,255,.1);--warm:#ffab5e;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{margin:0;min-height:100vh;color:var(--ink);font:16px/1.55 Manrope,system-ui,sans-serif;overflow-x:hidden}
+.orb{position:fixed;border-radius:50%;filter:blur(90px);opacity:.38;z-index:-1;animation:fl 18s ease-in-out infinite alternate}
+.o1{width:380px;height:380px;background:#0c8f4a;top:-120px;left:-100px}
+.o2{width:320px;height:320px;background:#0a6b6e;bottom:-100px;right:-80px;animation-delay:-9s}
+@keyframes fl{to{transform:translate(40px,60px) scale(1.15)}}
+main{max-width:480px;margin:0 auto;padding:max(18px,env(safe-area-inset-top)) 18px 190px}
+h1,h2,.num{letter-spacing:-.025em;margin:0}h1{font-size:2rem;font-weight:800;line-height:1.1}
+h2{font-size:.8rem;font-weight:600;color:var(--mut);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+p{margin:0 0 10px}.mut{color:var(--mut);font-size:.88rem}a{color:var(--g)}
+.glass{background:var(--glass);border:1px solid var(--bd);border-radius:24px;padding:18px;margin:12px 0;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
 .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.top button{background:none;border:0;font-size:1.4rem;cursor:pointer;color:var(--muted)}
-label{display:block;font-weight:600;margin:12px 0 4px}
-input,textarea{width:100%;font:inherit;padding:11px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
-dialog{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;max-width:min(440px,92vw);width:100%;color:var(--ink)}
-dialog::backdrop{background:rgba(10,25,30,.6)}
-.timer{font:700 2.6rem Georgia,serif;text-align:center}
-.breath{width:130px;height:130px;border-radius:50%;background:var(--soft);box-shadow:0 0 30px rgba(34,197,94,.35);margin:14px auto;animation:b 10s ease-in-out infinite}
-@keyframes b{0%,100%{transform:scale(.65)}40%{transform:scale(1)}}
-.tip{background:var(--soft);border-radius:10px;padding:12px;min-height:72px}
-svg{width:100%;height:auto;display:block}
+.brand{font-weight:800;display:flex;gap:8px;align-items:center}.dot{width:10px;height:10px;border-radius:50%;background:var(--g);box-shadow:0 0 14px var(--g)}
+.ic{background:var(--glass);border:1px solid var(--bd);color:var(--ink);width:40px;height:40px;border-radius:50%;font-size:1.1rem;cursor:pointer;transition:.3s}.ic:hover{transform:rotate(60deg)}
+.pg{display:none}.pg.on{display:block}
+.on>*{animation:in .6s cubic-bezier(.2,.8,.2,1) both}
+.on>:nth-child(2){animation-delay:.07s}.on>:nth-child(3){animation-delay:.14s}.on>:nth-child(4){animation-delay:.21s}.on>:nth-child(5){animation-delay:.28s}
+@keyframes in{from{opacity:0;transform:translateY(16px)}}
+.greet{text-align:center;color:var(--mut);margin:14px 0 0}
+.ringw{position:relative;width:250px;height:250px;margin:10px auto}
+.ringw svg{width:100%;height:100%;transform:rotate(-90deg)}
+.trk{fill:none;stroke:rgba(255,255,255,.07);stroke-width:12}
+.prg{fill:none;stroke-width:12;stroke-linecap:round;stroke-dasharray:653.45;stroke-dashoffset:653.45;transition:stroke-dashoffset 1.6s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 0 9px rgba(46,226,122,.6))}
+.ctr{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.num{font-size:4.6rem;font-weight:800;line-height:1;background:linear-gradient(180deg,#fff,#9af5b8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tm{text-align:center;font-weight:600;font-variant-numeric:tabular-nums;margin:0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.two .glass{margin:0;padding:16px}
+.val{font-size:1.45rem;font-weight:800;color:var(--g);font-variant-numeric:tabular-nums}
+.bd9{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.bd{aspect-ratio:1;border-radius:20px;border:1px solid var(--bd);background:var(--glass);display:grid;place-content:center;text-align:center;opacity:.4;transition:.5s}
+.bd b{font-size:1.8rem;line-height:1}.bd small{font-size:.68rem;color:var(--mut)}
+.bd.u{opacity:1;border-color:rgba(46,226,122,.6);background:rgba(46,226,122,.1);box-shadow:0 0 24px rgba(46,226,122,.18);animation:pop .7s var(--d,0s) cubic-bezier(.2,.9,.3,1.3) both}
+@keyframes pop{from{opacity:0;transform:scale(.8)}}
+svg.ch{width:100%;height:auto;display:block}
+@keyframes dr{to{stroke-dashoffset:0}}
+.btn{display:block;width:100%;border:0;border-radius:18px;padding:15px;font:inherit;font-weight:800;cursor:pointer;color:#03140a;text-align:center;text-decoration:none;background:linear-gradient(135deg,#2ee27a,#b6ff9a);transition:transform .25s,box-shadow .25s}
+.btn:hover{box-shadow:0 8px 28px rgba(46,226,122,.35)}.btn:active{transform:scale(.97)}
+.btn.alt{background:var(--glass);color:var(--g);border:1px solid var(--bd)}
+.fab{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(440px,calc(100% - 36px));background:linear-gradient(135deg,#ff9a4d,#ffc27a);color:#1a0a02;z-index:5;animation:pul 2.8s infinite}
+.fab:active{transform:translateX(-50%) scale(.97)}
+@keyframes pul{0%{box-shadow:0 0 0 0 rgba(255,171,94,.5)}70%,100%{box-shadow:0 0 0 18px rgba(255,171,94,0)}}
+.tabs{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(440px,calc(100% - 36px));display:grid;grid-template-columns:repeat(3,1fr);padding:5px;border-radius:22px;background:rgba(10,18,15,.75);border:1px solid var(--bd);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:6;--i:0}
+.ind{position:absolute;top:5px;bottom:5px;left:5px;width:calc((100% - 10px)/3);border-radius:17px;background:rgba(46,226,122,.16);border:1px solid rgba(46,226,122,.4);transform:translateX(calc(var(--i)*100%));transition:transform .5s cubic-bezier(.3,1.25,.4,1)}
+.tabs button{position:relative;background:none;border:0;color:var(--mut);font:600 .72rem Manrope,system-ui;padding:9px 0;display:grid;justify-items:center;gap:2px;cursor:pointer;transition:color .3s}
+.tabs button[aria-selected=true]{color:var(--g)}
+.tabs svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round}
+label{display:block;font-weight:600;margin:14px 0 6px}
+input,textarea{width:100%;font:inherit;padding:13px;border-radius:14px;border:1px solid var(--bd);background:rgba(255,255,255,.05);color:var(--ink);transition:border-color .3s,box-shadow .3s}
+input:focus,textarea:focus{outline:0;border-color:var(--g);box-shadow:0 0 0 4px rgba(46,226,122,.15)}
 :focus-visible{outline:3px solid #f0b429;outline-offset:2px}
-.hide{display:none!important}
-@media(prefers-reduced-motion:reduce){.breath{animation:none}}
+.sheet{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;padding:max(22px,env(safe-area-inset-top)) 22px calc(22px + env(safe-area-inset-bottom,0px));background:radial-gradient(circle at 50% 30%,#0b3b25,#03080a 70%);overflow:auto;opacity:0;visibility:hidden;transform:translateY(40px);transition:opacity .5s,transform .6s cubic-bezier(.2,.8,.2,1),visibility 0s .6s}
+.sheet.on{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.sheet>div{width:100%;max-width:420px;text-align:center}
+.orbw{position:relative;width:200px;height:200px;margin:14px auto;display:grid;place-content:center}
+.orbw i{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 35% 30%,#b6ff9a,#2ee27a 55%,#0c8f4a);box-shadow:0 0 70px rgba(46,226,122,.5);transform:scale(.55);transition:transform 4s ease-in-out}
+.orbw b{position:relative;color:#03140a;font-size:1.3rem}
+.cd{font-size:2.2rem;font-weight:800;font-variant-numeric:tabular-nums;margin:6px 0}
+.cdr{height:6px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;margin:0 auto 14px;max-width:260px}.cdr i{display:block;height:100%;width:100%;background:var(--g);transform-origin:left;transition:transform 1s linear}
+.tip{min-height:84px;display:grid;place-content:center;padding:14px;border-radius:18px;background:var(--glass);border:1px solid var(--bd);transition:opacity .25s}
+.tip.f{opacity:0}
+dialog{background:#0b1411;color:var(--ink);border:1px solid var(--bd);border-radius:24px;padding:22px;max-width:min(440px,92vw);width:100%}
+dialog::backdrop{background:rgba(0,0,0,.65);backdrop-filter:blur(6px)}
+dialog[open]{animation:pop2 .4s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes pop2{from{opacity:0;transform:scale(.93) translateY(12px)}}
+.hide{display:none!important}.gap{display:grid;gap:8px;margin-top:12px}
+@media(prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important}}
 </style></head>
-<body><main>
-
-<section id="setup" class="hide">
-<h1>Hoje Não</h1>
-<p>Um dia de cada vez. Vamos configurar seu contador. Tudo fica salvo só neste aparelho.</p>
-<div class="card">
-<label for="sw">Quanto você costumava gastar por semana com apostas? (R$)</label>
+<body><i class="orb o1"></i><i class="orb o2"></i>
+<main>
+<section id="setup" class="pg on">
+<div class="brand" style="margin:10px 0 28px"><i class="dot"></i>Hoje Não</div>
+<h1>Um dia de cada vez.</h1>
+<p class="mut" style="margin-top:12px">Vamos configurar seu contador. Tudo fica salvo só neste aparelho.</p>
+<div class="glass"><label for="sw" style="margin-top:0">Quanto você costumava gastar por semana com apostas? (R$)</label>
 <input id="sw" type="number" min="0" step="10" inputmode="decimal" placeholder="Ex.: 200">
-<label for="ss">Quando foi sua última aposta?</label>
-<input id="ss" type="datetime-local">
-<p class="muted">Se foi agora há pouco, deixe como está.</p>
-<label for="sr">Por que você quer parar? (opcional)</label>
-<textarea id="sr" rows="3" placeholder="Ex.: pela minha família, para pagar minhas dívidas..."></textarea>
-<p class="muted" style="margin-top:12px">O Hoje Não é uma ferramenta de apoio. Não é tratamento nem substitui acompanhamento profissional.</p>
-<button class="btn" id="go" type="button">Começar</button>
-</div></section>
-
-<section id="home" class="hide">
-<div class="top"><h1 style="font-size:1.5rem">Hoje Não</h1><button id="gear" type="button" aria-label="Configurações">⚙</button></div>
-
-<div class="card hero"><p>Você está há</p><div class="big" id="d">0</div><p id="dl">dias sem apostar</p><p id="hm" style="opacity:.85"></p></div>
-
-<div class="card"><h2>Dinheiro que ficou com você</h2><div class="money" id="sv">R$ 0,00</div>
-<svg id="ch" viewBox="0 0 320 170" role="img" aria-label="Gráfico da economia acumulada"></svg>
-<p class="muted" id="chn"></p></div>
-
-<div class="card"><h2>Próxima conquista</h2><p id="ms"></p><div class="bar"><i id="mb"></i></div><p class="muted" id="mt"></p></div>
-
-<div class="grid">
-<div><b id="best">0</b><span class="muted">melhor sequência (dias)</span></div>
-<div><b id="yr">R$ 0</b><span class="muted">em 1 ano</span></div>
-<div><b id="ug">0</b><span class="muted">vontades vencidas</span></div></div>
-
-<div class="card hide" id="rc"><h2>Meu motivo</h2><p id="rs" style="margin:0"></p></div>
-
-<div class="card"><h2>Apoio gratuito</h2>
-<p>CVV: ligue <a href="tel:188">188</a>, 24 h. CAPS AD pelo SUS. Jogadores Anônimos. Para sair das casas de apostas autorizadas, use a <a href="https://www.gov.br/fazenda/pt-br/composicao/orgaos/secretaria-de-premios-e-apostas/autoexclusao" target="_blank" rel="noopener">autoexclusão oficial do governo</a>, que é gratuita.</p></div>
-
-<button class="btn alt" id="rel" type="button">Tive uma recaída</button>
-<p class="muted" style="margin-top:14px">O Hoje Não é uma ferramenta de apoio, não é tratamento e não substitui acompanhamento profissional. <a href="termos.html">Termos e privacidade</a></p>
-<div class="cta"><button class="btn warm" id="urge" type="button">Estou com vontade agora</button></div>
+<label for="ss">Quando foi sua última aposta?</label><input id="ss" type="datetime-local">
+<label for="sr">Por que você quer parar? (opcional)</label><textarea id="sr" rows="3" placeholder="Pela minha família, para pagar minhas dívidas..."></textarea>
+<p class="mut" style="margin:14px 0">Ferramenta de apoio. Não é tratamento nem substitui acompanhamento profissional.</p>
+<button class="btn" id="go" type="button">Começar</button></div>
 </section>
 
-<dialog id="du"><h2>Respire. A vontade passa.</h2>
-<div class="breath" aria-hidden="true"></div>
-<p class="muted" style="text-align:center">Inspire pelo nariz (4 s) e solte devagar pela boca (6 s).</p>
-<div class="timer" id="tm">15:00</div>
-<div class="tip" id="tp"></div>
-<p class="muted" id="ur" style="margin-top:8px"></p>
-<button class="btn alt" id="nt" type="button" style="margin:8px 0">Outra dica</button>
-<button class="btn" id="ok" type="button">Passou, estou bem</button>
-<a class="btn alt" href="tel:188" style="margin-top:8px">Falar com alguém agora: CVV 188</a>
-<button class="btn alt" id="cu" type="button" style="margin-top:8px;border-color:var(--line);color:var(--muted)">Fechar</button></dialog>
+<div id="app" class="hide">
+<header class="top"><div class="brand"><i class="dot"></i>Hoje Não</div><button class="ic" id="gear" type="button" aria-label="Configurações">⚙</button></header>
 
-<dialog id="dr"><h2>Tudo bem. Você continua aqui.</h2>
-<p>Uma recaída não apaga o que você já construiu. Sua melhor sequência fica salva e você recomeça o contador agora.</p>
-<button class="btn" id="rok" type="button">Recomeçar o contador</button>
-<button class="btn alt" id="rno" type="button" style="margin-top:8px">Cancelar</button></dialog>
+<section class="pg on" id="v0">
+<p class="greet" id="gr"></p>
+<div class="ringw"><svg viewBox="0 0 250 250"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2ee27a"/><stop offset="1" stop-color="#d4ffb8"/></linearGradient></defs><circle class="trk" cx="125" cy="125" r="104"/><circle class="prg" id="rp" cx="125" cy="125" r="104" stroke="url(#rg)"/></svg>
+<div class="ctr"><div class="num" id="d">0</div><div class="mut" id="dl">dias sem apostar</div></div></div>
+<div><p class="tm" id="tm"></p><p class="mut" id="mt" style="text-align:center"></p></div>
+<div class="two"><div class="glass"><h2>Economizado</h2><div class="val" id="sv">R$ 0,00</div></div><div class="glass"><h2>Em 1 ano</h2><div class="val" id="yr">R$ 0</div></div></div>
+<div class="glass"><h2>Sua economia</h2><svg class="ch" id="ch" viewBox="0 0 320 150" role="img" aria-label="Gráfico da economia acumulada"></svg><p class="mut" id="chn" style="margin:8px 0 0"></p></div>
+<div class="glass hide" id="rc"><h2>Meu motivo</h2><p id="rs" style="margin:0;font-size:1.05rem"></p></div>
+</section>
 
-<dialog id="ds"><h2>Configurações</h2>
+<section class="pg" id="v1">
+<div class="glass"><h2>Conquistas</h2><div class="bd9" id="bg"></div></div>
+<div class="two"><div class="glass"><h2>Melhor sequência</h2><div class="val" id="best">0 dias</div></div><div class="glass"><h2>Vontades vencidas</h2><div class="val" id="ug">0</div></div></div>
+<div class="glass"><h2>Próxima conquista</h2><p id="ms" style="font-size:1.1rem;font-weight:600"></p><p class="mut" style="margin:0">Cada dia conta. Continue.</p></div>
+</section>
+
+<section class="pg" id="v2">
+<div class="glass"><h2>Apoio gratuito</h2>
+<p>Se a vontade estiver muito forte ou você estiver mal, fale com alguém agora.</p>
+<div class="gap"><a class="btn" href="tel:188">CVV: ligue 188 (24 h)</a>
+<a class="btn alt" href="https://www.gov.br/fazenda/pt-br/composicao/orgaos/secretaria-de-premios-e-apostas/autoexclusao" target="_blank" rel="noopener">Autoexclusão oficial do governo</a></div>
+<p class="mut" style="margin-top:12px">Também ajudam o CAPS AD (SUS, gratuito) e os grupos de Jogadores Anônimos.</p></div>
+<div class="glass"><h2>Recaiu?</h2><p>Acontece, e não apaga o que você construiu. Sua melhor sequência fica salva.</p><button class="btn alt" id="rel" type="button">Registrar uma recaída</button></div>
+<p class="mut">O Hoje Não é uma ferramenta de apoio. Não é tratamento e não substitui acompanhamento profissional. <a href="termos.html">Termos e privacidade</a></p>
+</section>
+
+<button class="btn fab" id="urge" type="button">Estou com vontade agora</button>
+<nav class="tabs" id="tabs" aria-label="Navegação"><i class="ind"></i>
+<button type="button" aria-selected="true"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Início</button>
+<button type="button" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>Conquistas</button>
+<button type="button" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M12 21s-8-5.2-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.8-8 11-8 11z"/></svg>Apoio</button></nav>
+</div>
+</main>
+
+<div class="sheet" id="sh" role="dialog" aria-modal="true" aria-label="Estou com vontade"><div>
+<h1 style="font-size:1.6rem;margin-top:8px">Respire. A vontade passa.</h1>
+<div class="orbw"><i id="orb"></i><b id="bl">Inspire</b></div>
+<div class="cd" id="cd">15:00</div><div class="cdr"><i id="cb"></i></div>
+<div class="tip" id="tp"></div><p class="mut" id="ur" style="margin:10px 0 0"></p>
+<div class="gap"><button class="btn alt" id="nt" type="button">Outra dica</button><button class="btn" id="ok" type="button">Passou, estou bem</button>
+<a class="btn alt" href="tel:188">Falar com alguém agora: CVV 188</a><button class="btn alt" id="cu" type="button" style="color:var(--mut)">Fechar</button></div></div></div>
+
+<dialog id="dr"><h1 style="font-size:1.4rem">Tudo bem. Você continua aqui.</h1><p class="mut" style="margin:10px 0">Uma recaída não apaga o que você já construiu. Sua melhor sequência fica salva e o contador recomeça agora.</p>
+<div class="gap"><button class="btn" id="rok" type="button">Recomeçar o contador</button><button class="btn alt" id="rno" type="button">Cancelar</button></div></dialog>
+<dialog id="ds"><h1 style="font-size:1.4rem">Configurações</h1>
 <label for="cw">Gasto semanal com apostas (R$)</label><input id="cw" type="number" min="0" step="10" inputmode="decimal">
 <label for="cr">Meu motivo</label><textarea id="cr" rows="3"></textarea>
-<button class="btn" id="cs" type="button" style="margin-top:12px">Salvar</button>
-<button class="btn alt" id="cc" type="button" style="margin-top:8px">Cancelar</button>
-<button class="btn alt" id="cx" type="button" style="margin-top:8px;color:var(--warm);border-color:var(--warm)">Apagar todos os meus dados</button></dialog>
+<div class="gap"><button class="btn" id="cs" type="button">Salvar</button><button class="btn alt" id="cc" type="button">Cancelar</button><button class="btn alt" id="cx" type="button" style="color:var(--warm)">Apagar todos os meus dados</button></div></dialog>
 
-</main>
 <script>
-const K="hojenao_v1",DAY=864e5,MS=[1,3,7,14,30,60,90,180,365];
+const K="hojenao_v1",DAY=864e5,C=653.45,MS=[1,3,7,14,30,60,90,180,365];
+const NM={1:"Primeiro passo",3:"Embalo",7:"Uma semana",14:"Duas semanas",30:"Um mês",60:"Dois meses",90:"Três meses",180:"Meio ano",365:"Um ano"};
 const TIPS=["A vontade sobe e passa em poucos minutos. Você não precisa vencer para sempre, só agora.","Saia do lugar onde está e deixe o celular em outro cômodo por 15 minutos.","Beba um copo d'água e lave o rosto. Mudar o corpo de estado ajuda a mente.","Mande mensagem para alguém de confiança: \"Estou com vontade de apostar, pode falar comigo?\"","Lembre da última vez que apostou: como você se sentiu depois que acabou?","Olhe o dinheiro que você já economizou e pense no que ele pode pagar.","Faça uma caminhada curta ou um exercício leve até o cronômetro acabar.","Se ainda tiver apps de apostas no celular, apague agora e faça a autoexclusão oficial."];
 const $=id=>document.getElementById(id);
 const brl=v=>v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
-let S=null,timer=null,ti=0;
+let S=null,timer=null,bt=null,inh=false,ti=0,open=false,ck="",ld=-1;
 try{S=JSON.parse(localStorage.getItem(K))}catch(e){}
 function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
-
-function show(){
- $("setup").classList.toggle("hide",!!S);
- $("home").classList.toggle("hide",!S);
- if(S)render();
-}
-function nowLocal(){const d=new Date(Date.now()-new Date().getTimezoneOffset()*6e4);return d.toISOString().slice(0,16)}
+function cnt(el,to,f){const a=el._v||0,t0=performance.now();el._v=to;if(a===to){el.textContent=f(to);return}(function s(t){const p=Math.min(1,(t-t0)/900),e=1-Math.pow(1-p,3);el.textContent=f(a+(to-a)*e);if(p<1)requestAnimationFrame(s)})(t0)}
+function nowLocal(){return new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,16)}
 $("ss").value=nowLocal();
-$("go").onclick=()=>{
- let t=new Date($("ss").value).getTime();if(!t||t>Date.now())t=Date.now();
- S={start:t,weekly:Math.max(0,Number($("sw").value)||0),reason:$("sr").value.trim(),best:0,urges:0};
- save();show();
-};
+$("go").onclick=()=>{let t=new Date($("ss").value).getTime();if(!t||t>Date.now())t=Date.now();
+ S={start:t,weekly:Math.max(0,Number($("sw").value)||0),reason:$("sr").value.trim(),best:0,urges:0,rel:0};save();show()};
+function show(){$("setup").classList.toggle("on",!S);$("setup").classList.toggle("hide",!!S);$("app").classList.toggle("hide",!S);if(S){go(0);render(true)}}
+function go(i){$("tabs").style.setProperty("--i",i);[0,1,2].forEach(n=>$("v"+n).classList.toggle("on",n===i));
+ $("tabs").querySelectorAll("button").forEach((b,n)=>b.setAttribute("aria-selected",n===i));scrollTo({top:0,behavior:"smooth"});if(i===0)ck=""}
+$("tabs").querySelectorAll("button").forEach((b,n)=>b.onclick=()=>{go(n);render(true)});
 
 function chart(el,per,D){
- const W=320,H=170,l=10,r=10,t=16,b=24,mx=Math.max(per*D,1);
- const x=d=>l+(W-l-r)*d/D,y=v=>H-b-(H-t-b)*v/mx,e=Math.min(el,D);
- let s=`<line x1="${l}" y1="${H-b}" x2="${W-r}" y2="${H-b}" stroke="#1f3a2b"/>`;
- s+=`<path d="M${x(0)} ${y(0)} L${x(e)} ${y(per*e)} L${x(e)} ${y(0)}Z" fill="#22c55e" opacity=".15"/>`;
- s+=`<path d="M${x(0)} ${y(0)} L${x(e)} ${y(per*e)}" stroke="#22c55e" stroke-width="3" fill="none" stroke-linecap="round"/>`;
- s+=`<path d="M${x(e)} ${y(per*e)} L${x(D)} ${y(per*D)}" stroke="#22c55e" stroke-width="2" stroke-dasharray="5 5" fill="none" opacity=".6"/>`;
- MS.filter(m=>m<=D).forEach(m=>{s+=`<circle cx="${x(m)}" cy="${y(per*m)}" r="5" fill="${m<=el?"#22c55e":"#000"}" stroke="#22c55e" stroke-width="2"/><text x="${x(m)}" y="${H-8}" font-size="10" text-anchor="middle" fill="#8fa89a">${m}d</text>`});
- s+=`<circle cx="${x(e)}" cy="${y(per*e)}" r="6" fill="#fb923c"/>`;
- $("ch").innerHTML=s;
+ const W=320,H=150,l=6,r=6,t=14,b=22,mx=Math.max(per*D,1),x=d=>l+(W-l-r)*d/D,y=v=>H-b-(H-t-b)*v/mx,e=Math.min(el,D);
+ let s=`<defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2ee27a" stop-opacity=".35"/><stop offset="1" stop-color="#2ee27a" stop-opacity="0"/></linearGradient></defs><line x1="${l}" y1="${H-b}" x2="${W-r}" y2="${H-b}" stroke="rgba(255,255,255,.1)"/>`;
+ s+=`<path d="M${x(0)} ${y(0)} L${x(e)} ${y(per*e)} L${x(e)} ${y(0)}Z" fill="url(#ga)"/>`;
+ s+=`<path d="M${x(e)} ${y(per*e)} L${x(D)} ${y(per*D)}" stroke="#2ee27a" stroke-width="2" stroke-dasharray="4 6" fill="none" opacity=".45"/>`;
+ s+=`<path pathLength="1" d="M${x(0)} ${y(0)} L${x(e)} ${y(per*e)}" stroke="#2ee27a" stroke-width="3.5" stroke-linecap="round" fill="none" style="stroke-dasharray:1;stroke-dashoffset:1;animation:dr 1.6s .15s cubic-bezier(.2,.8,.2,1) forwards;filter:drop-shadow(0 0 6px rgba(46,226,122,.7))"/>`;
+ MS.filter(m=>m<=D).forEach(m=>{s+=`<circle cx="${x(m)}" cy="${y(per*m)}" r="4.5" fill="${m<=el?"#2ee27a":"#04090a"}" stroke="#2ee27a" stroke-width="2"/><text x="${x(m)}" y="${H-6}" font-size="9" text-anchor="middle" fill="#86a091">${m}d</text>`});
+ s+=`<circle cx="${x(e)}" cy="${y(per*e)}" r="6" fill="#ffab5e"/>`;$("ch").innerHTML=s;
 }
-function render(){
- const el=(Date.now()-S.start)/DAY,days=Math.floor(el),per=S.weekly/7;
- $("d").textContent=days;$("dl").textContent=days===1?"dia sem apostar":"dias sem apostar";
- $("hm").textContent=Math.floor(el%1*24)+" h e "+Math.floor(el*1440%60)+" min"+(days===0?" · o primeiro dia é o mais difícil e você já está nele":"");
- $("sv").textContent=brl(per*el);
- const nx=MS.find(m=>m>el)||MS[MS.length-1],pv=[...MS].reverse().find(m=>m<=el)||0;
- chart(el,per,Math.max(30,nx));
- $("chn").textContent=S.weekly>0?"Linha cheia: o que você já guardou. Tracejada: o que vai guardar se continuar. Estimativa baseada no valor que você informou.":"Informe seu gasto semanal em ⚙ para ver a economia.";
- $("ms").textContent=el>=365?"Você passou de 1 ano. Parabéns!":"Chegar a "+nx+(nx===1?" dia":" dias");
- $("mb").style.width=Math.min(100,(el-pv)/(nx-pv)*100)+"%";
- $("mt").textContent=el>=365?"":"Faltam "+Math.max(1,Math.ceil(nx-el))+" dia(s).";
- $("best").textContent=Math.floor(Math.max(S.best,el));
- $("yr").textContent=brl(S.weekly*52).replace(",00","");
- $("ug").textContent=S.urges;
+function render(full){
+ const el=(Date.now()-S.start)/DAY,days=Math.floor(el),per=S.weekly/7;ld=days;
+ const nx=MS.find(m=>m>el)||365,pv=[...MS].reverse().find(m=>m<=el)||0,f=el>=365?1:(el-pv)/(nx-pv);
+ $("gr").textContent=days===0?"Hoje já é uma vitória.":"Dia "+(days+1)+". Hoje não.";
+ cnt($("d"),days,v=>Math.round(v));$("dl").textContent=days===1?"dia sem apostar":"dias sem apostar";
+ setTimeout(()=>$("rp").style.strokeDashoffset=C*(1-f),60);
+ $("mt").textContent=el>=365?"Mais de um ano. Parabéns!":"Faltam "+Math.max(1,Math.ceil(nx-el))+" dia(s) para "+nx+(nx===1?" dia":" dias");
+ cnt($("sv"),per*el,brl);cnt($("yr"),S.weekly*52,v=>brl(v).replace(",00",""));
+ const k=Math.floor(el*24)+"|"+S.weekly;if(full||k!==ck){ck=k;chart(el,per,Math.max(30,nx))}
+ $("chn").textContent=S.weekly>0?"Estimativa baseada no valor que você informou. Tracejado: o que vai guardar se continuar.":"Informe seu gasto semanal em ⚙ para ver a economia.";
  $("rc").classList.toggle("hide",!S.reason);$("rs").textContent=S.reason;
+ const bst=Math.max(S.best,el);$("best").textContent=Math.floor(bst)+(Math.floor(bst)===1?" dia":" dias");cnt($("ug"),S.urges,v=>Math.round(v));
+ $("ms").textContent=el>=365?"Você passou de 1 ano!":nx+(nx===1?" dia":" dias")+" · "+NM[nx];
+ $("bg").innerHTML=MS.map((m,i)=>`<div class="bd ${bst>=m?"u":""}" style="--d:${i*70}ms"><b>${m}</b><small>${m===1?"dia":"dias"}</small><small>${NM[m]}</small></div>`).join("");
 }
-setInterval(()=>{if(S)render()},30000);
+function tick(){if(!S)return;const el=Date.now()-S.start,h=Math.floor(el/36e5),m=Math.floor(el%36e5/6e4),s=Math.floor(el%6e4/1e3);
+ const p=n=>String(n).padStart(2,"0");$("tm").textContent=p(Math.floor(h%24))+" h  "+p(m)+" min  "+p(s)+" s";if(Math.floor(el/DAY)!==ld)render()}
+setInterval(tick,1000);setInterval(()=>S&&render(),60000);
 
-function tip(){ $("tp").textContent=TIPS[ti++%TIPS.length]}
-function closeU(){clearInterval(timer);$("du").close()}
-$("urge").onclick=()=>{
- ti=Math.floor(Math.random()*TIPS.length);tip();
- $("ur").textContent=S.reason?"Seu motivo: "+S.reason:"";
- const end=Date.now()+9e5;
- const tick=()=>{const s=Math.max(0,Math.round((end-Date.now())/1000));$("tm").textContent=String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");if(s===0){clearInterval(timer);$("tp").textContent="Quinze minutos se passaram. A vontade costuma ter diminuído bastante. Você conseguiu esperar."}};
- tick();clearInterval(timer);timer=setInterval(tick,1000);$("du").showModal();
-};
-$("nt").onclick=tip;$("cu").onclick=closeU;$("du").onclose=()=>clearInterval(timer);
+function tip(){const t=$("tp");t.classList.add("f");setTimeout(()=>{t.textContent=TIPS[ti++%TIPS.length];t.classList.remove("f")},250)}
+function br(){if(!open)return;inh=!inh;const o=$("orb");o.style.transitionDuration=(inh?4:6)+"s";o.style.transform=inh?"scale(1)":"scale(.55)";$("bl").textContent=inh?"Inspire":"Solte";bt=setTimeout(br,inh?4000:6000)}
+function closeU(){open=false;clearInterval(timer);clearTimeout(bt);$("sh").classList.remove("on");document.body.style.overflow="";$("orb").style.transform="scale(.55)"}
+$("urge").onclick=()=>{open=true;document.body.style.overflow="hidden";ti=Math.floor(Math.random()*TIPS.length);$("tp").textContent=TIPS[ti++%TIPS.length];
+ $("ur").textContent=S.reason?"Seu motivo: "+S.reason:"";const end=Date.now()+9e5;
+ const t=()=>{const s=Math.max(0,Math.round((end-Date.now())/1000));$("cd").textContent=String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");$("cb").style.transform=`scaleX(${s/900})`;
+  if(s===0){clearInterval(timer);$("tp").textContent="Quinze minutos se passaram. A vontade costuma ter diminuído bastante. Você conseguiu esperar."}};
+ t();clearInterval(timer);timer=setInterval(t,1000);inh=false;$("sh").classList.add("on");setTimeout(br,500);$("ok").focus({preventScroll:true})};
+$("nt").onclick=tip;$("cu").onclick=closeU;document.addEventListener("keydown",e=>{if(e.key==="Escape"&&open)closeU()});
 $("ok").onclick=()=>{S.urges++;save();closeU();render()};
 
-$("rel").onclick=()=>$("dr").showModal();
-$("rno").onclick=()=>$("dr").close();
-$("rok").onclick=()=>{S.best=Math.max(S.best,(Date.now()-S.start)/DAY);S.start=Date.now();save();$("dr").close();render()};
-
-$("gear").onclick=()=>{$("cw").value=S.weekly;$("cr").value=S.reason;$("ds").showModal()};
-$("cc").onclick=()=>$("ds").close();
-$("cs").onclick=()=>{S.weekly=Math.max(0,Number($("cw").value)||0);S.reason=$("cr").value.trim();save();$("ds").close();render()};
+$("rel").onclick=()=>$("dr").showModal();$("rno").onclick=()=>$("dr").close();
+$("rok").onclick=()=>{S.best=Math.max(S.best,(Date.now()-S.start)/DAY);S.start=Date.now();S.rel=(S.rel||0)+1;save();$("dr").close();go(0);render(true)};
+$("gear").onclick=()=>{$("cw").value=S.weekly;$("cr").value=S.reason;$("ds").showModal()};$("cc").onclick=()=>$("ds").close();
+$("cs").onclick=()=>{S.weekly=Math.max(0,Number($("cw").value)||0);S.reason=$("cr").value.trim();save();$("ds").close();render(true)};
 $("cx").onclick=()=>{if(confirm("Apagar todos os seus dados deste aparelho?")){try{localStorage.removeItem(K)}catch(e){}S=null;$("ds").close();show()}};
-show();
+show();tick();
 </script></body></html>

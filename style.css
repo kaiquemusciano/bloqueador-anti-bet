@@ -1,22 +1,29 @@
-:root{--ink:#e8f5ec;--paper:#000;--card:#0d1411;--accent:#22c55e;--soft:#10201a;--line:#1f3a2b;--muted:#8fa89a;color-scheme:dark}
-*{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
-main{max-width:640px;margin:0 auto;padding:32px 20px 56px}
-h1,h2{font-family:Georgia,"Times New Roman",serif;line-height:1.2;margin:0 0 14px}
-h1{font-size:2rem}h2{font-size:1.4rem;margin-top:36px}
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap");
+:root{--ink:#eaf6ee;--paper:#04090a;--card:rgba(255,255,255,.05);--accent:#2ee27a;--soft:rgba(46,226,122,.1);--line:rgba(255,255,255,.1);--muted:#86a091;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100vh;background:var(--paper);color:var(--ink);font:17px/1.6 Manrope,system-ui,-apple-system,"Segoe UI",sans-serif}
+body::before,body::after{content:"";position:fixed;border-radius:50%;filter:blur(90px);opacity:.38;z-index:-1;animation:fl 18s ease-in-out infinite alternate}
+body::before{width:380px;height:380px;background:#0c8f4a;top:-120px;left:-100px}
+body::after{width:320px;height:320px;background:#0a6b6e;bottom:-100px;right:-80px;animation-delay:-9s}
+@keyframes fl{to{transform:translate(40px,60px) scale(1.15)}}
+@keyframes in{from{opacity:0;transform:translateY(16px)}}
+main{max-width:640px;margin:0 auto;padding:32px 20px 56px;animation:in .7s cubic-bezier(.2,.8,.2,1) both}
+h1,h2{line-height:1.15;letter-spacing:-.025em;margin:0 0 14px;font-weight:800}
+h1{font-size:2.1rem}h2{font-size:1.35rem;margin-top:36px}
 p{margin:0 0 14px}a{color:var(--accent)}
 .muted{color:var(--muted);font-size:.9rem}
-.box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:16px 0}
-.note{background:var(--soft);border-color:var(--accent)}
-.btn{display:block;width:100%;text-align:center;background:var(--accent);color:#04120a;border:0;border-radius:8px;padding:14px 18px;font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
-.btn.alt{background:var(--card);color:var(--accent);border:1px solid var(--accent)}
-.btn:hover{filter:brightness(1.12)}
+.box{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:20px;margin:16px 0;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.note{background:var(--soft);border-color:rgba(46,226,122,.4)}
+.btn{display:block;width:100%;text-align:center;background:linear-gradient(135deg,#2ee27a,#b6ff9a);color:#03140a;border:0;border-radius:18px;padding:15px 18px;font:inherit;font-weight:800;text-decoration:none;cursor:pointer;transition:transform .25s,box-shadow .25s}
+.btn.alt{background:var(--card);color:var(--accent);border:1px solid var(--line)}
+.btn:hover{box-shadow:0 8px 28px rgba(46,226,122,.3)}.btn:active{transform:scale(.97)}
 :focus-visible{outline:3px solid #f0b429;outline-offset:2px}
-.opts{display:grid;gap:10px;margin:18px 0}
+.opts{display:grid;gap:10px;margin:18px 0}.opts .btn{animation:in .5s both}
+.opts .btn:nth-child(2){animation-delay:.06s}.opts .btn:nth-child(3){animation-delay:.12s}.opts .btn:nth-child(4){animation-delay:.18s}
 .bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--accent);transition:width .2s}
-.price{font-size:1.5rem;font-weight:700;color:var(--accent)}
-details{border-bottom:1px solid var(--line);padding:12px 0}summary{cursor:pointer;font-weight:600}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:3px;box-shadow:0 0 12px var(--accent);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.price{font-size:1.5rem;font-weight:800;color:var(--accent)}
+details{border-bottom:1px solid var(--line);padding:14px 0}summary{cursor:pointer;font-weight:600}
 footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line)}
 .hide{display:none}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
