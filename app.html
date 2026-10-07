@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#1f6f78">
+<meta name="theme-color" content="#000000">
 <title>Hoje Não: contador de dias sem apostar</title>
 <style>
-:root{--ink:#1d2b2f;--paper:#f6f8f7;--card:#fff;--accent:#1f6f78;--soft:#e2eeec;--line:#d5dfdd;--muted:#52656a;--warm:#c2410c}
+:root{--ink:#e8f5ec;--paper:#000;--card:#0d1411;--accent:#22c55e;--soft:#10201a;--line:#1f3a2b;--muted:#8fa89a;--warm:#fb923c;color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
 main{max-width:480px;margin:0 auto;padding:20px 16px 110px}
@@ -12,15 +12,15 @@ h1,h2,.big{font-family:Georgia,"Times New Roman",serif;margin:0}
 h2{font-size:1.2rem;margin-bottom:8px}
 p{margin:0 0 10px}.muted{color:var(--muted);font-size:.88rem}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
-.hero{background:var(--accent);color:#fff;border:0;text-align:center;padding:24px 16px}
-.big{font-size:4rem;line-height:1}.hero p{margin:6px 0 0}
+.hero{background:var(--card);color:var(--ink);border:1px solid var(--accent);text-align:center;padding:24px 16px}
+.big{font-size:4rem;line-height:1;color:var(--accent)}.hero p{margin:6px 0 0}
 .money{font-size:1.9rem;font-weight:700;color:var(--accent)}
 .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 .grid div{background:var(--soft);border-radius:10px;padding:10px 6px;text-align:center}
 .grid b{display:block;font-size:1.1rem}
-.btn{display:block;width:100%;border:0;border-radius:10px;padding:14px;font:inherit;font-weight:600;cursor:pointer;background:var(--accent);color:#fff;text-align:center;text-decoration:none}
+.btn{display:block;width:100%;border:0;border-radius:10px;padding:14px;font:inherit;font-weight:600;cursor:pointer;background:var(--accent);color:#04120a;text-align:center;text-decoration:none}
 .btn.alt{background:var(--card);color:var(--accent);border:1px solid var(--accent)}
-.btn.warm{background:var(--warm)}
+.btn.warm{background:var(--warm);color:#1a0a02}
 .bar{height:10px;background:var(--line);border-radius:5px;overflow:hidden;margin:8px 0}
 .bar i{display:block;height:100%;background:var(--accent);border-radius:5px}
 .cta{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,var(--paper) 35%)}
@@ -28,11 +28,11 @@ p{margin:0 0 10px}.muted{color:var(--muted);font-size:.88rem}
 .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .top button{background:none;border:0;font-size:1.4rem;cursor:pointer;color:var(--muted)}
 label{display:block;font-weight:600;margin:12px 0 4px}
-input,textarea{width:100%;font:inherit;padding:11px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
-dialog{border:0;border-radius:16px;padding:20px;max-width:min(440px,92vw);width:100%;color:var(--ink)}
+input,textarea{width:100%;font:inherit;padding:11px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+dialog{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;max-width:min(440px,92vw);width:100%;color:var(--ink)}
 dialog::backdrop{background:rgba(10,25,30,.6)}
 .timer{font:700 2.6rem Georgia,serif;text-align:center}
-.breath{width:130px;height:130px;border-radius:50%;background:var(--soft);margin:14px auto;animation:b 10s ease-in-out infinite}
+.breath{width:130px;height:130px;border-radius:50%;background:var(--soft);box-shadow:0 0 30px rgba(34,197,94,.35);margin:14px auto;animation:b 10s ease-in-out infinite}
 @keyframes b{0%,100%{transform:scale(.65)}40%{transform:scale(1)}}
 .tip{background:var(--soft);border-radius:10px;padding:12px;min-height:72px}
 svg{width:100%;height:auto;display:block}
@@ -132,12 +132,12 @@ $("go").onclick=()=>{
 function chart(el,per,D){
  const W=320,H=170,l=10,r=10,t=16,b=24,mx=Math.max(per*D,1);
  const x=d=>l+(W-l-r)*d/D,y=v=>H-b-(H-t-b)*v/mx,e=Math.min(el,D);
- let s=`<line x1="${l}" y1="${H-b}" x2="${W-r}" y2="${H-b}" stroke="#d5dfdd"/>`;
- s+=`<path d="M${x(0)} ${y(0)} L${x(e)} ${y(per*e)} L${x(e)} ${y(0)}Z" fill="#1f6f78" opacity=".15"/>`;
- s+=`<path d="M${x(0)} ${y(0)} L${x(e)} ${y(per*e)}" stroke="#1f6f78" stroke-width="3" fill="none" stroke-linecap="round"/>`;
- s+=`<path d="M${x(e)} ${y(per*e)} L${x(D)} ${y(per*D)}" stroke="#1f6f78" stroke-width="2" stroke-dasharray="5 5" fill="none" opacity=".6"/>`;
- MS.filter(m=>m<=D).forEach(m=>{s+=`<circle cx="${x(m)}" cy="${y(per*m)}" r="5" fill="${m<=el?"#1f6f78":"#fff"}" stroke="#1f6f78" stroke-width="2"/><text x="${x(m)}" y="${H-8}" font-size="10" text-anchor="middle" fill="#52656a">${m}d</text>`});
- s+=`<circle cx="${x(e)}" cy="${y(per*e)}" r="6" fill="#c2410c"/>`;
+ let s=`<line x1="${l}" y1="${H-b}" x2="${W-r}" y2="${H-b}" stroke="#1f3a2b"/>`;
+ s+=`<path d="M${x(0)} ${y(0)} L${x(e)} ${y(per*e)} L${x(e)} ${y(0)}Z" fill="#22c55e" opacity=".15"/>`;
+ s+=`<path d="M${x(0)} ${y(0)} L${x(e)} ${y(per*e)}" stroke="#22c55e" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+ s+=`<path d="M${x(e)} ${y(per*e)} L${x(D)} ${y(per*D)}" stroke="#22c55e" stroke-width="2" stroke-dasharray="5 5" fill="none" opacity=".6"/>`;
+ MS.filter(m=>m<=D).forEach(m=>{s+=`<circle cx="${x(m)}" cy="${y(per*m)}" r="5" fill="${m<=el?"#22c55e":"#000"}" stroke="#22c55e" stroke-width="2"/><text x="${x(m)}" y="${H-8}" font-size="10" text-anchor="middle" fill="#8fa89a">${m}d</text>`});
+ s+=`<circle cx="${x(e)}" cy="${y(per*e)}" r="6" fill="#fb923c"/>`;
  $("ch").innerHTML=s;
 }
 function render(){
