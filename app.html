@@ -72,6 +72,13 @@ dialog{background:#0b1411;color:var(--ink);border:1px solid var(--bd);border-rad
 dialog::backdrop{background:rgba(0,0,0,.65);backdrop-filter:blur(6px)}
 dialog[open]{animation:pop2 .4s cubic-bezier(.2,.9,.3,1.2)}
 @keyframes pop2{from{opacity:0;transform:scale(.93) translateY(12px)}}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:5px;border-radius:16px;background:var(--glass);border:1px solid var(--bd);margin:10px 0}
+.seg button{border:0;border-radius:12px;padding:10px;background:none;color:var(--mut);font:700 .9rem Manrope,system-ui;cursor:pointer;transition:.3s}
+.seg button[aria-selected=true]{background:rgba(46,226,122,.16);color:var(--g)}
+.steps{counter-reset:s;list-style:none;padding:0;margin:8px 0;text-align:left}
+.steps li{counter-increment:s;position:relative;padding:12px 12px 12px 54px;margin:8px 0;background:var(--glass);border:1px solid var(--bd);border-radius:16px;animation:in .5s both}
+.steps li::before{content:counter(s);position:absolute;left:13px;top:12px;width:28px;height:28px;border-radius:50%;background:rgba(46,226,122,.16);border:1px solid rgba(46,226,122,.5);color:var(--g);display:grid;place-content:center;font-weight:800}
+#sp>div{text-align:left}#sp h2{margin-top:20px}
 .hn{color:var(--g);font-weight:800}.hide{display:none!important}.gap{display:grid;gap:8px;margin-top:12px}
 @media(prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important}}
 </style></head>
@@ -114,6 +121,7 @@ dialog[open]{animation:pop2 .4s cubic-bezier(.2,.9,.3,1.2)}
 <div class="gap"><a class="btn" href="tel:188">CVV: ligue 188 (24 h)</a>
 <a class="btn alt" href="https://www.gov.br/fazenda/pt-br/composicao/orgaos/secretaria-de-premios-e-apostas/autoexclusao" target="_blank" rel="noopener">Autoexclusão oficial do governo</a></div>
 <p class="mut" style="margin-top:12px">Também ajudam o CAPS AD (SUS, gratuito) e os grupos de Jogadores Anônimos.</p></div>
+<div class="glass"><h2>Proteção extra</h2><p>Um filtro gratuito de DNS bloqueia sites de apostas no celular inteiro. Leva uns 5 minutos para configurar.</p><button class="btn alt" id="pe" type="button">Ver passo a passo</button></div>
 <div class="glass"><h2>Recaiu?</h2><p>Acontece, e não apaga o que você construiu. Sua melhor sequência fica salva.</p><button class="btn alt" id="rel" type="button">Registrar uma recaída</button></div>
 <p class="mut">O <span class="hn">Hoje Não</span> é uma ferramenta de apoio. Não é tratamento e não substitui acompanhamento profissional. <a href="termos.html">Termos e privacidade</a></p>
 </section>
@@ -133,6 +141,24 @@ dialog[open]{animation:pop2 .4s cubic-bezier(.2,.9,.3,1.2)}
 <div class="tip" id="tp"></div><p class="mut" id="ur" style="margin:10px 0 0"></p>
 <div class="gap"><button class="btn alt" id="nt" type="button">Outra dica</button><button class="btn" id="ok" type="button">Passou, estou bem</button>
 <a class="btn alt" href="tel:188">Falar com alguém agora: CVV 188</a><button class="btn alt" id="cu" type="button" style="color:var(--mut)">Fechar</button></div></div></div>
+
+<div class="sheet" id="sp" role="dialog" aria-modal="true" aria-label="Proteção extra"><div>
+<h1 style="font-size:1.6rem;margin-top:8px">Proteção extra</h1>
+<p class="mut" style="margin-top:8px">Um filtro de DNS bloqueia sites de apostas no celular todo, no Wi-Fi e no 4G/5G. É um serviço gratuito de terceiros (NextDNS), não faz parte deste app, e não bloqueia tudo.</p>
+<h2>1. Crie sua configuração</h2>
+<ol class="steps"><li>No navegador, acesse <b>my.nextdns.io</b> e crie uma conta gratuita.</li><li>Abra a aba <b>Parental Control</b> (Controle parental) e ative a categoria <b>Gambling</b> (Apostas).</li><li>Na aba <b>Setup</b> (Configuração), copie o seu <b>ID</b>, um código curto de letras e números.</li></ol>
+<h2>2. Ligue no seu celular</h2>
+<div class="seg"><button type="button" data-o="0" aria-selected="true">Android</button><button type="button" data-o="1" aria-selected="false">iPhone</button></div>
+<ol class="steps" id="o0"><li>Abra as <b>Configurações</b> e procure por <b>DNS privado</b> na busca. O caminho muda conforme a marca; costuma ficar em Rede e internet.</li><li>Escolha a opção <b>Nome do host do provedor de DNS privado</b>.</li><li>Digite <b>SEU-ID.dns.nextdns.io</b>, trocando SEU-ID pelo código que você copiou, e toque em <b>Salvar</b>.</li></ol>
+<ol class="steps hide" id="o1"><li>No <b>Safari</b> do iPhone, abra <b>apple.nextdns.io</b> e digite o seu ID.</li><li>Baixe o perfil de configuração que aparecer.</li><li>Em <b>Ajustes</b>, toque em <b>Perfil baixado</b> e depois em <b>Instalar</b>.</li></ol>
+<h2>3. Confira</h2>
+<p>Na aba <b>Logs</b> do NextDNS aparecem as consultas bloqueadas, e é lá que você vê se está funcionando.</p>
+<div class="glass"><h2 style="margin-top:0">O que você precisa saber</h2>
+<p><b>Limite grátis:</b> 300 mil consultas por mês. Passando disso, o filtro para de funcionar sem avisar na tela. Acompanhe o uso na aba <b>Analytics</b>. Confira os planos e valores em nextdns.io.</p>
+<p><b>Dá para desligar:</b> quem quer, desfaz em 30 segundos. Peça a alguém de confiança para criar a conta e guardar a senha.</p>
+<p><b>Sites novos escapam:</b> as casas de apostas criam endereços espelho o tempo todo.</p>
+<p style="margin:0"><b>Combine com a autoexclusão oficial</b> do governo (na aba Apoio), que é a barreira mais forte.</p></div>
+<button class="btn" id="pc" type="button" style="margin-top:6px">Entendi</button></div></div>
 
 <dialog id="dr"><h1 style="font-size:1.4rem">Tudo bem. Você continua aqui.</h1><p class="mut" style="margin:10px 0">Uma recaída não apaga o que você já construiu. Sua melhor sequência fica salva e o contador recomeça agora.</p>
 <div class="gap"><button class="btn" id="rok" type="button">Recomeçar o contador</button><button class="btn alt" id="rno" type="button">Cancelar</button></div></dialog>
@@ -204,5 +230,11 @@ $("rok").onclick=()=>{S.best=Math.max(S.best,(Date.now()-S.start)/DAY);S.start=D
 $("gear").onclick=()=>{$("cw").value=S.weekly;$("cr").value=S.reason;$("ds").showModal()};$("cc").onclick=()=>$("ds").close();
 $("cs").onclick=()=>{S.weekly=Math.max(0,Number($("cw").value)||0);S.reason=$("cr").value.trim();save();$("ds").close();render(true)};
 $("cx").onclick=()=>{if(confirm("Apagar todos os seus dados deste aparelho?")){try{localStorage.removeItem(K)}catch(e){}S=null;$("ds").close();show()}};
+const sp=$("sp");
+$("pe").onclick=()=>{sp.classList.add("on");document.body.style.overflow="hidden";sp.scrollTo(0,0)};
+function closeP(){sp.classList.remove("on");if(!open)document.body.style.overflow=""}
+$("pc").onclick=closeP;
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&sp.classList.contains("on"))closeP()});
+sp.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{const n=+b.dataset.o;sp.querySelectorAll(".seg button").forEach((x,i)=>x.setAttribute("aria-selected",i===n));$("o0").classList.toggle("hide",n!==0);$("o1").classList.toggle("hide",n!==1)});
 show();tick();
 </script></body></html>
