@@ -25,3 +25,5 @@ footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line)}
 .hn{color:var(--accent);font-weight:800}
 .hide{display:none}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+#back::before{content:"\2190\00a0\00a0"}
+#back{display:inline-block;width:auto;background:linear-gradient(135deg,#2ee27a,#b6ff9a);color:#03140a;border:0;padding:11px 22px;font-weight:800;font-size:.95rem}
